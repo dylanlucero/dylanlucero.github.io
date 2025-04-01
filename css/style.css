@@ -1,11 +1,35 @@
-.welcome{
+.container {
+    position: relative;
+    margin-top: -8rem;
+}
+
+.bar1 {
+    position: absolute;
+    top: 10rem;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
+}
+
+.welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bar2 {
+    position: absolute;
+    top: 20rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .background {
-
     position:absolute;
     top: 0;
     left: 0;
