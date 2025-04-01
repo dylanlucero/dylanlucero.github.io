@@ -1,6 +1,14 @@
-.container {
+html, body {
+    overflow: hidden ;
+}
+
+
+.header-container {
     position: relative;
-    margin-top: -8rem;
+    margin-top: -10rem;
+    transform: scale(0.6);
+    max-height: 100vh; 
+    overflow: hidden; 
 }
 
 .bar1 {
@@ -38,4 +46,34 @@
     background-image: url('../images/bg.gif');
     background-size: cover;
     background-position: center;
+    max-height: 100vh;
+}
+
+/* Centering the .intro div and adding a border */
+.intro {
+    margin-left: 17rem;
+    width: 60%;
+    max-width: 800px; 
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px; /* Optional: Rounded corners */
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white; 
+    text-align: center; 
+    box-sizing: border-box; 
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-bar-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100vh;
+}
+
+#home, #projects{
+    transform: scale(0.25);
 }
