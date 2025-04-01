@@ -1,5 +1,5 @@
-const home_button = document.getElementById("home");
+const enter_button = document.getElementById("skull")
 
-home_button.addEventListener('click', function(){
-    alert('There is no home!')
+enter_button.addEventListener('click', function(){
+    window.location.href('html/home.html');
 });
