@@ -1,0 +1,23 @@
+html, body{ background: black; }
+
+.construction{
+    max-height: 100vh; 
+    overflow: hidden; 
+}
+
+#baby, #construction{
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#baby{
+    top:30%;
+}
+
+#construction{
+    top:50%;
+}

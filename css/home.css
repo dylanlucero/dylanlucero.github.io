@@ -1,6 +1,4 @@
-html, body{
-    overflow: hidden; 
-}
+html, body{ overflow: hidden; }
 
 .header-container, .nav-bar-container, .background, #bar1, #bar2{
     position:absolute;
@@ -11,31 +9,21 @@ html, body{
     align-items: center;
 }
 
-.header-container{
-    top: -10%;
-}
+.header-container{ top: -10%; }
 
-.nav-bar-container {
-    top: 40%;
-}
+.nav-bar-container { top: 40%; }
 
-#bar1{
-    top: 35%;
-}
+#bar1{ top: 35%; }
 
-#bar2{
-    top:62%;
-}
+#bar2{ top:62%; }
 
-#home, #projects{
-    transform: scale(25%);
-}
+#home, #projects{ transform: scale(25%); }
 
 .background {
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../images/bg.gif');
+    background-image: url('../images/home/bg.gif');
     background-size: cover;
     background-position: center;
     max-height: 100%;
