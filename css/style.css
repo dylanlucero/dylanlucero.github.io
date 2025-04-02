@@ -1,72 +1,42 @@
-.header-container {
-    position: relative;
-    margin-top: -10rem;
-    transform: scale(0.6);
-    max-height: 100vh; 
+html, body{
     overflow: hidden; 
 }
 
-.bar1 {
-    position: absolute;
-    top: 10rem;
+.header-container, .nav-bar-container, .background, #bar1, #bar2{
+    position:absolute;
+    display: flex;
     left: 0;
     right: 0;
-    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.welcome {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.header-container{
+    top: -10%;
 }
 
-.bar2 {
-    position: absolute;
-    top: 20rem;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.nav-bar-container {
+    top: 40%;
+}
+
+#bar1{
+    top: 35%;
+}
+
+#bar2{
+    top:62%;
+}
+
+#home, #projects{
+    transform: scale(25%);
 }
 
 .background {
-    position:absolute;
     top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background-image: url('../images/bg.gif');
     background-size: cover;
     background-position: center;
-    max-height: 100vh;
-}
-
-/* Centering the .intro div and adding a border */
-.intro {
-    margin-left: 17rem;
-    width: 60%;
-    max-width: 800px; 
-    padding: 20px;
-    border: 2px solid black;
-    border-radius: 10px; /* Optional: Rounded corners */
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white; 
-    position: relative;
-
-
-}
-
-.nav-bar-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 100vh;
-}
-
-#home, #projects{
-    transform: scale(0.25);
+    max-height: 100%;
 }

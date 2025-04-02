@@ -2,6 +2,33 @@ html, body{
     background: black;
 }
 
-#main{
+.container{
+    position: relative;
+    margin-top: -10rem;
+    transform: scale(0.6);
+    max-height: 100vh; 
+    overflow: hidden; 
+}
+
+#entry-text, #blood, #skull{
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#entry-text{
     color: orange;
+    font-family: 'Times New Roman', Times, serif;
+    top: 40vh;
+}
+
+#blood {
+    top: 65vh;
+}
+
+#skull {
+    top: 60vh;
 }
