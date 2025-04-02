@@ -17,7 +17,7 @@ html, body{ overflow: hidden; }
 
 #bar2{ top:62%; }
 
-#home, #projects{ transform: scale(25%); }
+#contact, #projects{ transform: scale(25%); }
 
 .background {
     top: 0;

@@ -1,23 +1,32 @@
-html, body{ background: black; }
-
-.construction{
-    max-height: 100vh; 
-    overflow: hidden; 
+html, body{ 
+    background: black;
+    overflow:hidden;
 }
 
-#baby, #construction{
+.construction{ max-height: 100vh; }
+
+#baby, #construction, #back-button{
     position: absolute;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: -1;
 }
 
 #baby{
     top:30%;
+    transform: scale(250%);
 }
 
 #construction{
-    top:50%;
+    top:40%;
+    transform: scale(150%);
+}
+
+#back-button{
+    right: 78%;
+    top: 5%;
+    z-index: 1;
 }
