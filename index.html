@@ -1,21 +1,169 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Dylan Lucero – Portfolio</title>
+    <meta
+      name="description"
+      content="Portfolio of Dylan Lucero – developer and designer."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="#hero" class="site-logo" aria-label="Back to top">
+          <span class="site-logo__mark">DL</span>
+          <span class="site-logo__text">Dylan&nbsp;Lucero</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#about" class="site-nav__link">About</a>
+          <a href="#projects" class="site-nav__link">Projects</a>
+          <a href="#contact" class="site-nav__link">Contact</a>
+        </nav>
+      </div>
+    </header>
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>.enter</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/index.css">
-    </head>
-    <body>
-        <div class="cointainer"></div>
-            <div id='entry-text'>Welcome to my site</div>
-            <div id="blood"><img src="images/enter/blood.gif"></div>
-            <div id="skull">
-                <a href="home"><img src="images/enter/skull.gif"  type="button"></a>
+    <main>
+      <section id="hero" class="section section--hero section--parallax">
+        <div class="section--hero__overlay"></div>
+        <div class="page-width section--hero__content">
+          <p class="eyebrow">Portfolio of</p>
+          <h1 class="hero-title">Dylan Lucero</h1>
+          <p class="hero-subtitle">
+            Developer &amp; creative technologist crafting thoughtful digital
+            experiences.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn--primary">View projects</a>
+            <a href="#contact" class="btn btn--ghost">Get in touch</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section section--light">
+        <div class="page-width section__content">
+          <h2>About</h2>
+          <p>
+            This is a placeholder for your story. Use this space to talk about
+            what you do, what you care about, and what makes your work
+            different. Keep it short and human.
+          </p>
+          <div class="columns">
+            <div class="columns__item">
+              <h3>Focus</h3>
+              <ul class="pill-list">
+                <li>Web development</li>
+                <li>Interface design</li>
+                <li>Creative coding</li>
+              </ul>
             </div>
-        <script src="js/index.js" async defer></script>
-    </body>
+            <div class="columns__item">
+              <h3>Toolbox</h3>
+              <ul class="pill-list">
+                <li>JavaScript / TypeScript</li>
+                <li>React</li>
+                <li>Node.js</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section section--dark section--parallax">
+        <div class="section--dark__overlay"></div>
+        <div class="page-width section__content">
+          <h2>Selected projects</h2>
+          <p class="section-lede">
+            Drop in your favorite work here – shipped products, experiments, or
+            anything that shows how you think.
+          </p>
+          <div class="grid grid--projects">
+            <article class="project-card">
+              <div class="project-card__meta">
+                <span class="project-card__tag">Featured</span>
+              </div>
+              <h3 class="project-card__title">Project name</h3>
+              <p class="project-card__description">
+                One or two sentences describing what this is, who it was for,
+                and why it matters.
+              </p>
+              <div class="project-card__footer">
+                <span class="project-card__stack">React • TypeScript</span>
+                <a href="#" class="project-card__link">View details</a>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <h3 class="project-card__title">Another project</h3>
+              <p class="project-card__description">
+                A short description of another piece of work. Swap these cards
+                for real projects.
+              </p>
+              <div class="project-card__footer">
+                <span class="project-card__stack">Node.js • Design systems</span>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <h3 class="project-card__title">Experimental piece</h3>
+              <p class="project-card__description">
+                Placeholder for a fun, visual, or experimental project that
+                represents your taste.
+              </p>
+              <div class="project-card__footer">
+                <span class="project-card__stack">WebGL • Creative coding</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section section--light section--contact">
+        <div class="page-width section__content">
+          <h2>Contact</h2>
+          <p>
+            Ready to collaborate or just want to say hi? Swap in your preferred
+            contact details below.
+          </p>
+          <div class="contact-layout">
+            <div class="contact-layout__primary">
+              <div class="contact-card">
+                <p class="contact-card__label">Email</p>
+                <a href="mailto:you@example.com" class="contact-card__value">
+                  you@example.com
+                </a>
+              </div>
+              <div class="contact-card">
+                <p class="contact-card__label">Elsewhere</p>
+                <div class="contact-card__links">
+                  <a href="#" class="contact-card__link">GitHub</a>
+                  <a href="#" class="contact-card__link">LinkedIn</a>
+                  <a href="#" class="contact-card__link">Twitter</a>
+                </div>
+              </div>
+            </div>
+            <div class="contact-layout__secondary">
+              <p class="contact-note">
+                You can also add a simple contact form here later, or direct
+                people to a calendar link for quick calls.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-width site-footer__inner">
+        <p class="site-footer__text">
+          &copy; <span id="year"></span> Dylan Lucero. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/index.js" defer></script>
+  </body>
 </html>
