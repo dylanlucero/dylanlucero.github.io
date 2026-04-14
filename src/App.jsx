@@ -3,24 +3,49 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react";
 
 const projects = [
   {
-    title: "Project Name",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.",
-    stack: "Lorem",
+    title: "AI Energy Consumption & Grid Impact",
+    meta: "DAT 490 Capstone · Spring 2025",
+    bullets: [
+      "Built a full data pipeline ingesting monthly generation, CO₂ emissions (SEDS TETCE), and retail electricity price data across all 50 U.S. states from multiple EIA.gov APIs.",
+      "Engineered a custom PyTorch Transformer classifier with state-token embeddings and 6-month feature sequences to predict whether a state-month is \u201Cgreen,\u201D achieving ≈76% test accuracy and outperforming logistic regression.",
+      "Trained a Ridge regression model with state fixed effects and polynomial features to project retail electricity prices under various renewable-share scenarios; evaluated with GroupShuffleSplit to prevent leakage.",
+      "Authored a reusable Python module handling data loading, feature engineering, sequence windowing, and train/test splitting for reproducibility.",
+    ],
+    stack: "Python · PyTorch · scikit-learn · Pandas",
     link: "#",
   },
   {
-    title: "Another Project",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.",
-    stack: "Ipsum",
+    title: "Diffusion Model for Digit Generation",
+    meta: "DAT 494 · Fall 2025",
+    bullets: [
+      "Designed a denoising diffusion model that generates handwritten digits from pure noise on MNIST (60K images); code published on GitHub.",
+      "Built a 6-layer U-Net (3 down / 3 up) with skip connections, Conv2d layers (1→32→64→64, 5×5 kernels), GELU activations, MaxPool downsampling, and nearest-neighbor upsampling.",
+      "Implemented a linear noise schedule via torch.lerp interpolation; trained 15 epochs (batch size 128) with MSELoss and Adam (lr = 1e-4).",
+      "Generated novel digits through a 5-step iterative denoising loop.",
+    ],
+    stack: "Python · PyTorch · NumPy",
+    link: "https://github.com/dylanlucero",
+  },
+  {
+    title: "Los Angeles Crime Data Analysis",
+    meta: "DAT 301 · Spring 2025",
+    bullets: [
+      "Cleaned and analyzed 900K+ crime records (2020–2025) from the City of Los Angeles Open Data portal.",
+      "Produced geospatial and temporal visualizations in R (ggplot2) and Python (Plotly) to identify high-crime areas and seasonal patterns.",
+      "Performed hypothesis testing (two-sample t-test) to evaluate demographic differences in crime victimization.",
+    ],
+    stack: "R · Python · ggplot2 · Plotly",
     link: "#",
   },
   {
-    title: "Experimental Work",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.",
-    stack: "Dolor",
+    title: "ASA DataFest 2025 — Real Estate Prediction",
+    meta: "48-Hour Competition · April 2025",
+    bullets: [
+      "Collaborated in a 5-person team during a 48-hour competition to analyze 6 years of national real estate transaction data.",
+      "Engineered features and built a Linear Regression model to forecast property price trends, evaluated via RMSE.",
+      "Cleaned and transformed raw data using Pandas; created Tableau dashboards for exploratory analysis and final presentation.",
+    ],
+    stack: "Python · Pandas · Tableau",
     link: "#",
   },
 ];
@@ -68,8 +93,6 @@ function FadeItem({ children, className }) {
 
 function App() {
   const [theme, setTheme] = useState("light");
-  const [themeWave, setThemeWave] = useState(null);
-  const [pageRipple, setPageRipple] = useState(null);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const { scrollYProgress: heroScrollProgress } = useScroll({
@@ -103,52 +126,12 @@ function App() {
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const handleThemeToggle = (event) => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const maxX = Math.max(x, window.innerWidth - x);
-    const maxY = Math.max(y, window.innerHeight - y);
-    const radius = Math.hypot(maxX, maxY);
-    const waveColor = nextTheme === "dark" ? "#282828" : "#f8f6f1";
-
-    setThemeWave({
-      x,
-      y,
-      radius,
-      color: waveColor,
-    });
-    window.setTimeout(() => setTheme(nextTheme), 120);
-    window.setTimeout(() => setPageRipple({ x, y }), 170);
-    window.setTimeout(() => setThemeWave(null), 340);
-    window.setTimeout(() => setPageRipple(null), 460);
+  const handleThemeToggle = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
     <>
-      {themeWave && (
-        <motion.div
-          className="theme-wave"
-          aria-hidden="true"
-          style={{ background: themeWave.color }}
-          initial={{ clipPath: `circle(0px at ${themeWave.x}px ${themeWave.y}px)` }}
-          animate={{ clipPath: `circle(${themeWave.radius}px at ${themeWave.x}px ${themeWave.y}px)` }}
-          transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-        />
-      )}
-      {pageRipple && (
-        <motion.div
-          className="page-ripple"
-          aria-hidden="true"
-          style={{
-            background: `radial-gradient(circle at ${pageRipple.x}px ${pageRipple.y}px, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.12) 18%, transparent 55%)`,
-          }}
-          initial={{ opacity: 0, scale: 0.985 }}
-          animate={{ opacity: [0, 0.25, 0], scale: [0.985, 1.015, 1] }}
-          transition={{ duration: 0.28, ease: "easeOut" }}
-        />
-      )}
       <motion.div className="scroll-progress" style={{ scaleX: barScale }} />
 
       <header className="site-header">
@@ -190,10 +173,10 @@ function App() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             style={{ y: heroContentShift, opacity: heroContentOpacity }}
           >
-            <p className="eyebrow">Portfolio</p>
+            <p className="eyebrow">Data Science · Machine Learning</p>
             <h1>Dylan Lucero</h1>
-            <p className="lead">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.
+            <p className="lead lead-wide">
+              <span className="hl">Data scientist and engineer</span> focused on building <span className="hl">end-to-end pipelines</span>, <span className="hl">deep learning models</span>, and clear, <span className="hl">reproducible analysis</span>. Currently pursuing a <span className="hl">B.S. in Data Science</span> at <span className="hl">Arizona State University</span>, with an <span className="hl">M.S. in Industrial Engineering</span> on deck.
             </p>
             <div className="hero-actions">
               <a href="#projects" className="btn btn-primary">
@@ -209,21 +192,77 @@ function App() {
         <FadeSection id="about" className="section section-light" amount={0.25}>
           <div className="container">
             <h2>About</h2>
-            <p className="section-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.
+            <p className="section-text section-text-wide">
+              I work at the intersection of <span className="hl">data</span>, <span className="hl">machine learning</span>, and <span className="hl">engineering</span> — turning messy real-world data into models and tools that hold up to scrutiny. My coursework and projects span <span className="hl">deep learning</span>, <span className="hl">statistical modeling</span>, <span className="hl">geospatial analysis</span>, and the <span className="hl">pipelines</span> that make all of it <span className="hl">reproducible</span>.
             </p>
-            <div className="about-grid">
-              <div className="panel">
-                <h3>Focus</h3>
-                <ul>
-                  <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut ex aperiam reprehenderit quae sint. Doloremque eos reiciendis eveniet perspiciatis fugiat incidunt magnam. Quaerat nesciunt vel, quisquam repellendus dignissimos quibusdam commodi.</li>
-                </ul>
+
+            <div className="about-block">
+              <h3 className="about-heading">Focus</h3>
+              <div className="chip-row">
+                <span className="chip">Deep Learning</span>
+                <span className="chip">Transformers</span>
+                <span className="chip">Diffusion Models</span>
+                <span className="chip">U-Nets</span>
+                <span className="chip">Statistical Modeling</span>
+                <span className="chip">Hypothesis Testing</span>
+                <span className="chip">Data Pipelines</span>
+                <span className="chip">Feature Engineering</span>
+                <span className="chip">Geospatial Analysis</span>
+                <span className="chip">Time-Series</span>
               </div>
-              <div className="panel">
-                <h3>Toolkit</h3>
-                <ul>
-                  <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora quod voluptatibus a ducimus culpa quasi iure, nam eos pariatur nemo alias deserunt enim. Explicabo ipsa eum incidunt qui pariatur ex?</li>
-                </ul>
+            </div>
+
+            <div className="about-block">
+              <h3 className="about-heading">Toolkit</h3>
+              <div className="chip-row">
+                <span className="chip chip-solid">Python</span>
+                <span className="chip chip-solid">SQL</span>
+                <span className="chip chip-solid">R</span>
+                <span className="chip chip-solid">C/C++</span>
+                <span className="chip chip-solid">Java</span>
+                <span className="chip">PyTorch</span>
+                <span className="chip">scikit-learn</span>
+                <span className="chip">Pandas</span>
+                <span className="chip">NumPy</span>
+                <span className="chip">SciPy</span>
+                <span className="chip">Matplotlib</span>
+                <span className="chip">Seaborn</span>
+                <span className="chip">ggplot2</span>
+                <span className="chip">Plotly</span>
+                <span className="chip">Tableau</span>
+                <span className="chip">PostgreSQL</span>
+                <span className="chip">MongoDB</span>
+                <span className="chip">AWS</span>
+                <span className="chip">Alteryx</span>
+                <span className="chip">Git</span>
+              </div>
+            </div>
+
+            <div className="about-block">
+              <h3 className="about-heading">Education</h3>
+              <div className="edu-list">
+                <div className="edu-item">
+                  <div className="edu-degree">M.S. Industrial Engineering</div>
+                  <div className="edu-school">Arizona State University</div>
+                  <div className="edu-date">Expected May 2028</div>
+                </div>
+                <div className="edu-item">
+                  <div className="edu-degree">B.S. Data Science, CS Track</div>
+                  <div className="edu-school">Arizona State University</div>
+                  <div className="edu-date">May 2026</div>
+                </div>
+                <div className="edu-item">
+                  <div className="edu-degree">A.S. Computer Science</div>
+                  <div className="edu-school">Glendale Community College</div>
+                  <div className="edu-date">December 2023</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-block">
+              <h3 className="about-heading">Certifications</h3>
+              <div className="chip-row">
+                <span className="chip chip-accent">Alteryx Designer Core — Mar 2026</span>
               </div>
             </div>
           </div>
@@ -232,14 +271,19 @@ function App() {
         <FadeSection id="projects" className="section section-dark" amount={0.2}>
           <div className="container">
             <h2>Selected Projects</h2>
-            <p className="section-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet deserunt hic dolor ea, beatae aperiam exercitationem odit eos explicabo laboriosam? Sit, et dolor vero eveniet sint aspernatur id assumenda nulla.
+            <p className="section-text section-text-wide">
+              A cross-section of recent coursework and competitions — <span className="hl">deep learning models</span>, <span className="hl">statistical analyses</span>, and <span className="hl">data pipelines</span> built around <span className="hl">real datasets</span>. Each one is as much about the plumbing as the result.
             </p>
             <div className="project-grid">
-              {projects.map((project, index) => (
+              {projects.map((project) => (
                 <FadeItem key={project.title} className="project-card">
                   <h3>{project.title}</h3>
-                  <p>{project.description}</p>
+                  {project.meta && <p className="project-meta">{project.meta}</p>}
+                  <ul className="project-bullets">
+                    {project.bullets.map((bullet, i) => (
+                      <li key={i}>{bullet}</li>
+                    ))}
+                  </ul>
                   <div className="project-foot">
                     <span>{project.stack}</span>
                     <a href={project.link}>Details</a>
@@ -254,7 +298,7 @@ function App() {
           <div className="container">
             <h2>Contact</h2>
             <p className="section-text">
-              Let&apos;s build something together.
+              Open to internships, research collaborations, and data science roles. Email is the fastest way to reach me.
             </p>
             <div className="contact-card">
               <a href="mailto:dylanlucero98@gmail.com">dylanlucero98@gmail.com</a>
