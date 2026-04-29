@@ -130,9 +130,9 @@ function ShaderBackground() {
       float fbm(vec2 p) {
         float v = 0.0;
         float amp = 0.5;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
           v += amp * vnoise(p);
-          p *= 2.02;
+          p *= 2.0;
           amp *= 0.5;
         }
         return v;
@@ -140,22 +140,26 @@ function ShaderBackground() {
 
       void main() {
         vec2 uv = gl_FragCoord.xy / u_res.xy;
-        vec2 p = uv * 2.4;
-        p.x += u_time * 0.04;
-        p.y -= u_time * 0.025;
+        vec2 p = uv * 2.0;
+        p.x += u_time * 0.012;
+        p.y -= u_time * 0.008;
 
-        float n = fbm(p + fbm(p + u_time * 0.05));
+        float n = fbm(p + fbm(p + u_time * 0.015));
 
-        vec3 cream  = vec3(0.961, 0.925, 0.851);
-        vec3 deep   = vec3(0.925, 0.875, 0.769);
-        vec3 accent = vec3(0.784, 0.663, 0.416);
+        // Catppuccin Frappe base tones — very close together
+        vec3 base   = vec3(0.188, 0.204, 0.275); // #303446
+        vec3 mantle = vec3(0.161, 0.173, 0.235); // #292c3c
 
-        vec3 col = mix(cream, deep, smoothstep(0.2, 0.85, n));
-        col = mix(col, accent, smoothstep(0.65, 0.95, n) * 0.18);
+        // Just gently shift between the two base tones
+        vec3 col = mix(base, mantle, smoothstep(0.35, 0.65, n));
 
-        // soft vignette
+        // A barely-visible hint of accent color in the peaks
+        vec3 mauve = vec3(0.792, 0.620, 0.902);
+        col += mauve * smoothstep(0.7, 0.9, n) * 0.03;
+
+        // Very gentle vignette
         float d = distance(uv, vec2(0.5));
-        col *= 1.0 - smoothstep(0.55, 1.1, d) * 0.18;
+        col *= 1.0 - smoothstep(0.6, 1.3, d) * 0.12;
 
         gl_FragColor = vec4(col, 1.0);
       }
@@ -232,12 +236,18 @@ function HeroShader() {
       uniform vec2 u_res;
       uniform float u_time;
 
+      // Catppuccin Frappe accents
       vec3 palette(float t) {
-        vec3 a = vec3(0.78, 0.66, 0.42);
-        vec3 b = vec3(0.62, 0.50, 0.30);
-        vec3 c = vec3(0.95, 0.88, 0.70);
-        vec3 d = vec3(0.30, 0.22, 0.55);
-        return a + b * cos(6.2831 * (c * t + d));
+        vec3 mauve    = vec3(0.792, 0.620, 0.902);
+        vec3 blue     = vec3(0.549, 0.667, 0.933);
+        vec3 lavender = vec3(0.729, 0.733, 0.945);
+        vec3 teal     = vec3(0.506, 0.784, 0.745);
+
+        float s = fract(t);
+        if (s < 0.25) return mix(mauve, blue, s / 0.25);
+        if (s < 0.5)  return mix(blue, lavender, (s - 0.25) / 0.25);
+        if (s < 0.75) return mix(lavender, teal, (s - 0.5) / 0.25);
+        return mix(teal, mauve, (s - 0.75) / 0.25);
       }
 
       void main() {
@@ -245,18 +255,18 @@ function HeroShader() {
         vec2 uv0 = uv;
         vec3 col = vec3(0.0);
 
-        for (float i = 0.0; i < 3.0; i++) {
-          uv = fract(uv * 1.4) - 0.5;
+        for (float i = 0.0; i < 2.0; i++) {
+          uv = fract(uv * 1.3) - 0.5;
           float d = length(uv) * exp(-length(uv0));
-          vec3 c = palette(length(uv0) + i * 0.4 + u_time * 0.25);
-          d = sin(d * 8.0 + u_time * 0.6) / 8.0;
+          vec3 c = palette(length(uv0) + i * 0.5 + u_time * 0.08);
+          d = sin(d * 6.0 + u_time * 0.2) / 8.0;
           d = abs(d);
-          d = pow(0.012 / d, 1.4);
+          d = pow(0.008 / d, 1.1);
           col += c * d;
         }
 
-        col *= 0.55;
-        gl_FragColor = vec4(col, 0.42);
+        col *= 0.18;
+        gl_FragColor = vec4(col, 0.12);
       }
     `;
 
@@ -531,6 +541,7 @@ function App() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
+                <div className="portrait-ring" />
                 <div className="portrait-frame">
                   <img src="./portrait.jpeg" alt="Portrait of Dylan Lucero" loading="eager" />
                 </div>
