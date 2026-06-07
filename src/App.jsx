@@ -1,28 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
-
-const ROLES = [
-  "Data Scientist",
-  "Software Engineer",
-  "ML Researcher",
-  "Pipeline Builder",
-  "Problem Solver",
-];
 
 const FOCUS = [
   "Deep Learning",
   "Transformers",
   "Diffusion Models",
-  "U-Nets",
+  "Machine Learning",
+  "ETL & Data Pipelines",
   "Statistical Modeling",
-  "Hypothesis Testing",
-  "Data Pipelines",
+  "Predictive Analytics",
   "Feature Engineering",
   "Geospatial Analysis",
   "Time-Series",
@@ -32,78 +17,108 @@ const TOOLKIT = [
   "Python",
   "SQL",
   "R",
-  "C/C++",
   "Java",
+  "C/C++",
   "PyTorch",
   "scikit-learn",
   "Pandas",
   "NumPy",
   "SciPy",
   "Matplotlib",
-  "Seaborn",
-  "ggplot2",
   "Plotly",
+  "ggplot2",
   "Tableau",
+  "Power BI",
+  "Alteryx",
+  "AWS",
+  "Git/GitHub",
   "PostgreSQL",
   "MongoDB",
-  "AWS",
-  "Alteryx",
-  "Git",
+  "Excel",
 ];
 
 const projects = [
   {
     title: "AI Energy Consumption & Grid Impact",
-    meta: "Capstone · Spring 2025",
+    meta: "Major Capstone Project · Spring 2025",
     bullets: [
-      "Pulled monthly generation, CO₂ emissions, and retail price data for all 50 states straight from the EIA APIs and stitched it into one tidy pipeline.",
-      "Trained a small PyTorch Transformer on six-month windows to call whether a state-month was “green.” Hit ~76% on the test set and beat my logistic baseline.",
-      "Layered Ridge regression with state effects on top to project where prices might land as renewables grow. Used GroupShuffleSplit so nothing leaked.",
-      "Wrapped the whole thing in a reusable module so I (or anyone) can rerun it without retyping the boring parts.",
+      "Built automated ETL pipelines via EIA APIs (Python, SQL) to analyze residential utility price burdens across multiple states.",
+      "Trained a PyTorch Transformer model on rolling windows to classify electricity demand, achieving 76% test accuracy."
     ],
-    stack: "Python · PyTorch · scikit-learn · Pandas",
+    stack: "Python · PyTorch · scikit-learn · SQL",
+    image: "./project_energy.png",
+    link: "#",
+  },
+  {
+    title: "Los Angeles Crime Data Analysis",
+    meta: "Academic Project · Spring 2025",
+    bullets: [
+      "Cleaned and transformed 900K+ arrest records from the LA Open Data Portal, removing 18 irrelevant attributes.",
+      "Identified demographic arrest differences using a two-sample t-test and mapped spatial clusters across 16 areas."
+    ],
+    stack: "R · ggplot2 · Plotly · Stats",
+    image: "./project_crime.png",
+    link: "#",
+  },
+  {
+    title: "MLB Home Run Analysis",
+    meta: "Personal Project · Spring 2025",
+    bullets: [
+      "Developed BeautifulSoup web scrapers (Python) to extract batting metrics from paginated sports data sources.",
+      "Conducted team-level power hitting t-tests (SciPy) and created 5+ interactive player-metric charts in Plotly."
+    ],
+    stack: "Python · Pandas · SciPy · Plotly",
+    image: "./project_mlb.png",
+    link: "https://github.com/dylanlucero",
+  },
+  {
+    title: "ASA DataFest 2025 — Real Estate",
+    meta: "Competition · April 2025",
+    bullets: [
+      "Collaborated in a 48-hour sprint to clean, analyze, and model 6 years of national real estate data, earning 5th Place.",
+      "Built linear regression forecasting models for regional price trends and prepped interactive Tableau dashboards."
+    ],
+    stack: "Python · Pandas · Tableau · Stats",
+    image: "./project_datafest.png",
     link: "#",
   },
   {
     title: "Diffusion Model for Digit Generation",
-    meta: "DAT 494 · Fall 2025",
+    meta: "Academic Project · Fall 2025",
     bullets: [
-      "Trained a denoising diffusion model on MNIST that draws digits out of pure noise. Code is on GitHub.",
-      "Six-layer U-Net (3 down, 3 up) with skip connections, GELU activations, and nearest-neighbor upsampling.",
-      "Linear noise schedule via torch.lerp, 15 epochs, batch 128, MSE loss, Adam at 1e-4.",
-      "Sampling runs a five-step denoising loop and the digits actually look like digits.",
+      "Trained a PyTorch denoising diffusion model on MNIST to generate handwritten digits from pure gaussian noise.",
+      "Implemented a 6-layer U-Net with skip connections, GELU activations, and a 5-step sampling schedule."
     ],
-    stack: "Python · PyTorch · NumPy",
+    stack: "Python · PyTorch · NumPy · U-Net",
+    image: "./project_diffusion.png",
     link: "https://github.com/dylanlucero",
-  },
-  {
-    title: "Los Angeles Crime Data Analysis",
-    meta: "DAT 301 · Spring 2025",
-    bullets: [
-      "Cleaned 900K+ crime records from LA’s open data portal and made them actually usable.",
-      "Mapped hot spots and seasonal patterns in R (ggplot2) and Python (Plotly) so the trends could speak for themselves.",
-      "Ran a two-sample t-test to check whether demographic differences in victimization were real or just noise.",
-    ],
-    stack: "R · Python · ggplot2 · Plotly",
-    link: "#",
-  },
-  {
-    title: "ASA DataFest 2025 — Real Estate",
-    meta: "48-Hour Competition · April 2025",
-    bullets: [
-      "48 hours, five people, six years of national real estate data.",
-      "Built features and a Linear Regression model to forecast price trends, scored with RMSE.",
-      "Prepped the data in Pandas and put together Tableau dashboards for the final pitch.",
-    ],
-    stack: "Python · Pandas · Tableau",
-    link: "#",
   },
 ];
 
 function ShaderBackground() {
   const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const currentMouseRef = useRef({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseRef.current = {
+        x: e.clientX / window.innerWidth,
+        y: 1 - e.clientY / window.innerHeight,
+      };
+    };
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        mouseRef.current = {
+          x: e.touches[0].clientX / window.innerWidth,
+          y: 1 - e.touches[0].clientY / window.innerHeight,
+        };
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
+
     const canvas = canvasRef.current;
     const gl = canvas.getContext("webgl", { antialias: false, alpha: false });
     if (!gl) return;
@@ -115,10 +130,12 @@ function ShaderBackground() {
     const frag = `
       precision mediump float;
       uniform vec2 u_res;
+      uniform vec2 u_mouse;
       uniform float u_time;
 
       float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-      float vnoise(vec2 p) {
+      
+      float noise(vec2 p) {
         vec2 i = floor(p), f = fract(p);
         float a = hash(i);
         float b = hash(i + vec2(1.0, 0.0));
@@ -127,40 +144,38 @@ function ShaderBackground() {
         vec2 u = f * f * (3.0 - 2.0 * f);
         return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
       }
-      float fbm(vec2 p) {
-        float v = 0.0;
-        float amp = 0.5;
-        for (int i = 0; i < 3; i++) {
-          v += amp * vnoise(p);
-          p *= 2.0;
-          amp *= 0.5;
-        }
-        return v;
-      }
 
       void main() {
         vec2 uv = gl_FragCoord.xy / u_res.xy;
-        vec2 p = uv * 2.0;
-        p.x += u_time * 0.012;
-        p.y -= u_time * 0.008;
-
-        float n = fbm(p + fbm(p + u_time * 0.015));
-
-        // Catppuccin Frappe base tones — very close together
-        vec3 base   = vec3(0.188, 0.204, 0.275); // #303446
-        vec3 mantle = vec3(0.161, 0.173, 0.235); // #292c3c
-
-        // Just gently shift between the two base tones
-        vec3 col = mix(base, mantle, smoothstep(0.35, 0.65, n));
-
-        // A barely-visible hint of accent color in the peaks
-        vec3 mauve = vec3(0.792, 0.620, 0.902);
-        col += mauve * smoothstep(0.7, 0.9, n) * 0.03;
-
-        // Very gentle vignette
-        float d = distance(uv, vec2(0.5));
-        col *= 1.0 - smoothstep(0.6, 1.3, d) * 0.12;
-
+        
+        // Aspect-ratio correction to prevent stretching of circular mouse-following gradient
+        vec2 p = uv;
+        float aspect = u_res.x / u_res.y;
+        p.x *= aspect;
+        
+        vec2 m = u_mouse;
+        m.x *= aspect;
+        
+        float dist = distance(p, m);
+        
+        // Add subtle organic distortion to the highlight using noise
+        float n = noise(p * 5.0 + u_time * 0.15);
+        dist += n * 0.035;
+        
+        // Warm technical sand/gray desk background: #eae6dc
+        vec3 desk = vec3(0.918, 0.902, 0.863);
+        
+        // Soft warm sunlight spotlight glow: #faeed1
+        vec3 glow = vec3(0.980, 0.937, 0.820);
+        
+        // Radial blend centered on mouse position
+        float intensity = smoothstep(0.48, 0.0, dist);
+        vec3 col = mix(desk, glow, intensity * 0.55);
+        
+        // Subtle paper fiber grain texture
+        float grain = hash(gl_FragCoord.xy + u_time * 0.01) * 0.014;
+        col -= vec3(grain);
+        
         gl_FragColor = vec4(col, 1.0);
       }
     `;
@@ -189,6 +204,7 @@ function ShaderBackground() {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
     const uRes = gl.getUniformLocation(prog, "u_res");
+    const uMouse = gl.getUniformLocation(prog, "u_mouse");
     const uTime = gl.getUniformLocation(prog, "u_time");
 
     function resize() {
@@ -203,7 +219,12 @@ function ShaderBackground() {
     let raf;
     const start = performance.now();
     function loop(t) {
+      // Smoothly interpolate current mouse coordinate to target
+      currentMouseRef.current.x += (mouseRef.current.x - currentMouseRef.current.x) * 0.08;
+      currentMouseRef.current.y += (mouseRef.current.y - currentMouseRef.current.y) * 0.08;
+
       gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform2f(uMouse, currentMouseRef.current.x, currentMouseRef.current.y);
       gl.uniform1f(uTime, (t - start) / 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       raf = requestAnimationFrame(loop);
@@ -213,445 +234,168 @@ function ShaderBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
   return <canvas ref={canvasRef} className="shader-bg" aria-hidden="true" />;
 }
 
-function HeroShader() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const gl = canvas.getContext("webgl", { antialias: false, alpha: true, premultipliedAlpha: false });
-    if (!gl) return;
-
-    const vert = `
-      attribute vec2 a_pos;
-      void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
-    `;
-    const frag = `
-      precision mediump float;
-      uniform vec2 u_res;
-      uniform float u_time;
-
-      // Catppuccin Frappe accents
-      vec3 palette(float t) {
-        vec3 mauve    = vec3(0.792, 0.620, 0.902);
-        vec3 blue     = vec3(0.549, 0.667, 0.933);
-        vec3 lavender = vec3(0.729, 0.733, 0.945);
-        vec3 teal     = vec3(0.506, 0.784, 0.745);
-
-        float s = fract(t);
-        if (s < 0.25) return mix(mauve, blue, s / 0.25);
-        if (s < 0.5)  return mix(blue, lavender, (s - 0.25) / 0.25);
-        if (s < 0.75) return mix(lavender, teal, (s - 0.5) / 0.25);
-        return mix(teal, mauve, (s - 0.75) / 0.25);
-      }
-
-      void main() {
-        vec2 uv = (gl_FragCoord.xy - 0.5 * u_res.xy) / u_res.y;
-        vec2 uv0 = uv;
-        vec3 col = vec3(0.0);
-
-        for (float i = 0.0; i < 2.0; i++) {
-          uv = fract(uv * 1.3) - 0.5;
-          float d = length(uv) * exp(-length(uv0));
-          vec3 c = palette(length(uv0) + i * 0.5 + u_time * 0.08);
-          d = sin(d * 6.0 + u_time * 0.2) / 8.0;
-          d = abs(d);
-          d = pow(0.008 / d, 1.1);
-          col += c * d;
-        }
-
-        col *= 0.18;
-        gl_FragColor = vec4(col, 0.12);
-      }
-    `;
-
-    function compile(type, src) {
-      const s = gl.createShader(type);
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      return s;
-    }
-    const prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vert));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, frag));
-    gl.linkProgram(prog);
-    gl.useProgram(prog);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "a_pos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-    const uRes = gl.getUniformLocation(prog, "u_res");
-    const uTime = gl.getUniformLocation(prog, "u_time");
-
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const w = canvas.clientWidth || canvas.parentElement.clientWidth;
-      const h = canvas.clientHeight || canvas.parentElement.clientHeight;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-    window.addEventListener("resize", resize);
-
-    let raf;
-    const start = performance.now();
-    function loop(t) {
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, (t - start) / 1000);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      raf = requestAnimationFrame(loop);
-    }
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="hero-shader" aria-hidden="true" />;
-}
-
-function RotatingRoles({ roles, interval = 2200 }) {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI((p) => (p + 1) % roles.length), interval);
-    return () => clearInterval(t);
-  }, [roles.length, interval]);
-  return (
-    <div className="role-rotator" aria-live="polite">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={roles[i]}
-          initial={{ y: 22, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -22, opacity: 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {roles[i]}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function Marquee({ items, direction = "left", duration = 38, solid = false }) {
-  const doubled = [...items, ...items];
-  const xRange = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
-  return (
-    <div className="marquee" aria-hidden="false">
-      <motion.div
-        className="marquee-track"
-        animate={{ x: xRange }}
-        transition={{ duration, repeat: Infinity, ease: "linear" }}
-      >
-        {doubled.map((item, i) => (
-          <span key={i} className={solid ? "chip chip-solid" : "chip"}>
-            {item}
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
-function LoadingScreen() {
-  return (
-    <motion.div
-      className="loader"
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
-    >
-      <div className="loader-glow loader-glow-a" />
-      <div className="loader-glow loader-glow-b" />
-
-      <div className="loader-stack">
-        <h1 className="loader-name">Dylan Lucero</h1>
-
-        <motion.p
-          className="loader-eyebrow"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.25 } }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-        >
-          Portfolio
-        </motion.p>
-
-        <motion.div
-          className="loader-bar"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.25 } }}
-          transition={{ delay: 0.3, duration: 0.4 }}
-        >
-          <motion.div
-            className="loader-bar-fill"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-          />
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
-
-function FadeSection({ id, className, children }) {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const opacityRaw = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const opacity = useSpring(opacityRaw, { stiffness: 120, damping: 26, mass: 0.35 });
-
-  return (
-    <motion.section ref={sectionRef} id={id} className={className} style={{ opacity }}>
-      {children}
-    </motion.section>
-  );
-}
-
-function FadeItem({ children, className }) {
-  const itemRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: itemRef,
-    offset: ["start 0.95", "end 0.05"],
-  });
-  const opacityRaw = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
-  const yRaw = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [18, 0, 0, -18]);
-  const opacity = useSpring(opacityRaw, { stiffness: 130, damping: 28, mass: 0.34 });
-  const y = useSpring(yRaw, { stiffness: 130, damping: 28, mass: 0.34 });
-
-  return (
-    <motion.article
-      ref={itemRef}
-      className={className}
-      style={{ opacity, y }}
-      whileHover={{ scale: 1.015 }}
-      whileTap={{ scale: 0.995 }}
-      transition={{ type: "spring", stiffness: 240, damping: 22, mass: 0.5 }}
-    >
-      {children}
-    </motion.article>
-  );
-}
-
 function App() {
-  const [loading, setLoading] = useState(true);
-  const heroRef = useRef(null);
-  const portraitRef = useRef(null);
-
-  const { scrollYProgress } = useScroll();
-  const { scrollYProgress: heroScrollProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const { scrollYProgress: portraitScroll } = useScroll({
-    target: portraitRef,
-    offset: ["start end", "end start"],
-  });
-
-  const barScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const heroBackgroundShift = useSpring(
-    useTransform(heroScrollProgress, [0, 1], [0, 220]),
-    { stiffness: 110, damping: 24, mass: 0.42 }
-  );
-  const heroContentShift = useSpring(useTransform(heroScrollProgress, [0, 1], [0, 120]), {
-    stiffness: 110,
-    damping: 24,
-    mass: 0.42,
-  });
-  const heroContentOpacity = useSpring(
-    useTransform(heroScrollProgress, [0, 0.65, 1], [1, 0.85, 0]),
-    { stiffness: 110, damping: 24, mass: 0.42 }
-  );
-
-  const portraitScale = useSpring(
-    useTransform(portraitScroll, [0, 0.5, 1], [0.92, 1.04, 0.92]),
-    { stiffness: 110, damping: 22, mass: 0.4 }
-  );
-  const portraitRotate = useSpring(
-    useTransform(portraitScroll, [0, 1], [-6, 6]),
-    { stiffness: 110, damping: 22, mass: 0.4 }
-  );
-  const portraitY = useSpring(
-    useTransform(portraitScroll, [0, 1], [40, -40]),
-    { stiffness: 110, damping: 22, mass: 0.4 }
-  );
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1400);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
     <>
       <ShaderBackground />
 
-      <AnimatePresence>{loading && <LoadingScreen key="loader" />}</AnimatePresence>
-
-      <motion.div className="scroll-progress" style={{ scaleX: barScale }} />
-
-      <main>
-        <section id="hero" className="hero" ref={heroRef}>
-          <HeroShader />
-          <motion.div className="hero-glow hero-glow-a" style={{ y: heroBackgroundShift }} />
-          <motion.div className="hero-glow hero-glow-b" style={{ y: heroBackgroundShift }} />
-
-          <motion.div
-            className="container hero-content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 1.4 }}
-            style={{ y: heroContentShift, opacity: heroContentOpacity }}
-          >
-            <div className="hero-grid">
-              <div className="hero-text">
-                <h1>Dylan Lucero</h1>
-                <RotatingRoles roles={ROLES} />
-                <p className="lead">
-                  I build things with data — pipelines, models, and the occasional dashboard. Right now I’m finishing my <span className="hl">B.S. in Data Science</span> at <span className="hl">Arizona State</span> and lining up an <span className="hl">M.S. in Industrial Engineering</span>. I like problems that start messy and end up making sense.
-                </p>
-                <div className="hero-actions">
-                  <a href="#projects" className="btn btn-primary">See my work</a>
-                  <a href="#contact" className="btn btn-ghost">Say hi</a>
-                </div>
-              </div>
-
-              <motion.div
-                ref={portraitRef}
-                className="portrait-wrap"
-                style={{ scale: portraitScale, rotate: portraitRotate, y: portraitY }}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div className="portrait-ring" />
-                <div className="portrait-frame">
-                  <img src="./portrait.jpeg" alt="Portrait of Dylan Lucero" loading="eager" />
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="scroll-cue"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 0.6 }}
-          >
-            <span>Scroll</span>
-            <motion.div
-              className="scroll-cue-line"
-              animate={{ scaleY: [0.2, 1, 0.2] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
-        </section>
-
-        <FadeSection id="about" className="section section-light">
+      <div className="notebook-sheet">
+        <header className="site-header">
           <div className="container">
-            <h2>About</h2>
-            <p className="section-text section-text-wide">
-              I sit somewhere between <span className="hl">data</span>, <span className="hl">ML</span>, and plain old <span className="hl">engineering</span>. Most of what I do is taking a messy dataset, asking it the right questions, and building something — a model, a pipeline, a chart — that actually answers them. I care about making the work <span className="hl">reproducible</span> so future-me (and anyone else) doesn’t have to guess what past-me did.
-            </p>
-
-            <div className="about-block">
-              <h3 className="about-heading">Focus — what I love working on</h3>
-              <Marquee items={FOCUS} direction="left" duration={42} />
-            </div>
-
-            <div className="about-block">
-              <h3 className="about-heading">Toolkit — what I reach for</h3>
-              <Marquee items={TOOLKIT} direction="right" duration={48} solid />
-            </div>
-            <div className="about-block">
-              <h3 className="about-heading">Education</h3>
-              <div className="edu-list">
-                <div className="edu-item">
-                  <div className="edu-degree">M.S. Industrial Engineering</div>
-                  <div className="edu-school">Arizona State University</div>
-                  <div className="edu-date">Expected May 2028</div>
-                </div>
-                <div className="edu-item">
-                  <div className="edu-degree">B.S. Data Science, CS Track</div>
-                  <div className="edu-school">Arizona State University</div>
-                  <div className="edu-date">May 2026</div>
-                </div>
-                <div className="edu-item">
-                  <div className="edu-degree">A.S. Computer Science</div>
-                  <div className="edu-school">Glendale Community College</div>
-                  <div className="edu-date">December 2023</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="about-block">
-              <h3 className="about-heading">Certifications</h3>
-              <div className="chip-row">
-                <span className="chip chip-accent">Alteryx Designer Core — Mar 2026</span>
-              </div>
-            </div>
+            <nav className="notebook-nav">
+              <a href="#hero" className="nav-link">// 01_INTRO</a>
+              <a href="#about" className="nav-link">// 02_ABOUT</a>
+              <a href="#projects" className="nav-link">// 03_PROJECTS</a>
+              <a href="#contact" className="nav-link">// 04_CONTACT</a>
+            </nav>
           </div>
-        </FadeSection>
+        </header>
 
-        <FadeSection id="projects" className="section section-dark">
-          <div className="container">
-            <h2>Things I’ve Built</h2>
-            <p className="section-text section-text-wide">
-              A handful of recent projects from coursework and competitions. Each one taught me something I didn’t know going in — usually about the data, sometimes about myself.
-            </p>
-            <div className="project-grid">
-              {projects.map((project) => (
-                <FadeItem key={project.title} className="project-card">
-                  <h3>{project.title}</h3>
-                  {project.meta && <p className="project-meta">{project.meta}</p>}
-                  <ul className="project-bullets">
-                    {project.bullets.map((bullet, i) => (
-                      <li key={i}>{bullet}</li>
-                    ))}
-                  </ul>
-                  <div className="project-foot">
-                    <span>{project.stack}</span>
-                    <a href={project.link}>Details</a>
+        <main>
+          <section id="hero" className="hero">
+            <div className="container hero-content">
+              <div className="hero-grid">
+                <div className="hero-text">
+                  <div className="notebook-tag">SEC_01 // INTRO</div>
+                  <h1>Dylan Lucero</h1>
+                  <div className="sub-roles">
+                    [ DATA SCIENTIST ] &bull; [ SOFTWARE ENGINEER ] &bull; [ ML RESEARCHER ]
                   </div>
-                </FadeItem>
-              ))}
-            </div>
-          </div>
-        </FadeSection>
+                  <p className="lead">
+                    Hi, I’m Dylan. I’m a data scientist and developer focused on turning complex, messy datasets into clean, reliable pipelines. Having just completed my <span className="hl">B.S. in Data Science</span> at <span className="hl">Arizona State</span>, I’m preparing for my <span className="hl">M.S. in Industrial Engineering</span> to blend statistical analysis with operations research. I thrive on unstructured challenges that need a balance of mathematics and code to solve.
+                  </p>
+                  <div className="hero-actions">
+                    <a href="#projects" className="btn btn-primary">See my work</a>
+                    <a href="#contact" className="btn btn-ghost">Say hi</a>
+                  </div>
+                </div>
 
-        <FadeSection id="contact" className="section section-light">
-          <div className="container">
-            <h2>Let’s Talk</h2>
-            <p className="section-text">
-              Always up for an interesting problem — internships, research, or a good data conversation. Email’s the quickest way to reach me.
-            </p>
-            <div className="contact-card">
-              <a href="mailto:dylanlucero98@gmail.com">dylanlucero98@gmail.com</a>
-              <div className="contact-links">
-                <a href="https://github.com/dylanlucero" target="_blank" rel="noreferrer">GitHub</a>
-                <a href="https://www.linkedin.com/in/dylanlucero/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <div className="portrait-wrap">
+                  <div className="portrait-frame">
+                    <img src="./portrait.jpeg" alt="Portrait of Dylan Lucero" loading="eager" />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </FadeSection>
-      </main>
+          </section>
+
+          <section id="about" className="section">
+            <div className="container">
+              <div className="notebook-tag">SEC_02 // ABOUT</div>
+              <h2>About</h2>
+              <p className="section-text section-text-wide">
+                My work lies at the intersection of statistical analysis, software engineering, and systems research. From building predictive PyTorch Transformer pipelines to analyze state electricity grids, to clean-transforming 900,000+ LAPD arrest records, I enjoy writing code that makes complex data clear. I place a strong emphasis on <span className="hl">reproducibility</span>—ensuring that every pipeline, scraper, and statistical model is clean, documented, and easy to build upon.
+              </p>
+
+              <div className="about-block">
+                <h3 className="about-heading">Focus — what I love working on</h3>
+                <div className="chip-row">
+                  {FOCUS.map((item, idx) => (
+                    <span key={idx} className="chip">{item}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="about-block">
+                <h3 className="about-heading">Toolkit — what I reach for</h3>
+                <div className="chip-row">
+                  {TOOLKIT.map((item, idx) => (
+                    <span key={idx} className="chip chip-solid">{item}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="about-block">
+                <h3 className="about-heading">Education</h3>
+                <div className="edu-list">
+                  <div className="edu-item">
+                    <div className="edu-degree">M.S. Industrial Engineering</div>
+                    <div className="edu-school">Arizona State University Online</div>
+                    <div className="edu-date">Expected May 2028</div>
+                  </div>
+                  <div className="edu-item">
+                    <div className="edu-degree">B.S. Data Science, Computer Science Track</div>
+                    <div className="edu-school">Arizona State University &bull; Tempe, AZ</div>
+                    <div className="edu-date">May 2026 &bull; GPA: 3.32/4.00</div>
+                  </div>
+                  <div className="edu-item">
+                    <div className="edu-degree">A.S. Computer Science</div>
+                    <div className="edu-school">Glendale Community College &bull; Glendale, AZ</div>
+                    <div className="edu-date">December 2023 &bull; GPA: 3.47/4.00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="about-block">
+                <h3 className="about-heading">Honors & Recognition</h3>
+                <div className="chip-row">
+                  <span className="chip chip-accent">ASU Dean’s List (Spring 2025, Fall 2025, Spring 2026)</span>
+                  <span className="chip chip-solid">ASA DataFest 2025 — 5th Place</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="projects" className="section">
+            <div className="container">
+              <div className="notebook-tag">SEC_03 // THINGS I'VE BUILT</div>
+              <h2>Things I’ve Built</h2>
+              <p className="section-text section-text-wide">
+                A handful of recent projects from coursework, competitions, and personal development. Each represents a unique challenge solved using modern data engineering and statistical methods.
+              </p>
+              <div className="project-grid">
+                {projects.map((project, idx) => (
+                  <article key={idx} className="project-card">
+                    {project.image && (
+                      <div className="project-card-image-wrap">
+                        <img src={project.image} alt={project.title} className="project-card-image" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="project-card-content">
+                      <h3>{project.title}</h3>
+                      {project.meta && <p className="project-meta">{project.meta}</p>}
+                      <ul className="project-bullets">
+                        {project.bullets.map((bullet, i) => (
+                          <li key={i}>{bullet}</li>
+                        ))}
+                      </ul>
+                      <div className="project-foot">
+                        <span className="project-stack">{project.stack}</span>
+                        <a href={project.link} className="project-link">Details &rarr;</a>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" className="section">
+            <div className="container">
+              <div className="notebook-tag">SEC_04 // CONTACT</div>
+              <h2>Let’s Talk</h2>
+              <p className="section-text">
+                I’m always open to talking shop about data engineering, machine learning pipelines, or upcoming research opportunities in operations and systems modeling. Whether you have a challenging technical problem or just want to connect, feel free to drop me an email!
+              </p>
+              <div className="contact-card">
+                <a href="mailto:dylanlucero98@gmail.com" className="contact-email">dylanlucero98@gmail.com</a>
+                <div className="contact-links">
+                  <a href="https://github.com/dylanlucero" target="_blank" rel="noreferrer">GitHub</a>
+                  <a href="https://www.linkedin.com/in/dylanlucero/" target="_blank" rel="noreferrer">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
     </>
   );
 }
