@@ -709,3 +709,123 @@ h3 {
     padding: 3.5rem 0;
   }
 }
+
+/* --- Added Resume-aligned Styles --- */
+
+/* Single Education Layout */
+.edu-list-single {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.edu-list-single .edu-item {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* Experience Section */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  text-align: left;
+}
+
+.experience-item {
+  padding: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 6px;
+  box-shadow: var(--shadow-tactile);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, background-color 0.22s ease;
+}
+
+.experience-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-blue);
+  background-color: #ffffff;
+  box-shadow: 
+    0 10px 25px rgba(27, 38, 59, 0.06),
+    0 3px 8px rgba(27, 38, 59, 0.03);
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px dashed var(--card-border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.experience-title-company h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.3rem;
+  color: var(--ink-main);
+}
+
+.experience-company {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.experience-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.experience-date {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+.experience-location {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.experience-bullets {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.experience-bullets li {
+  font-size: 0.95rem;
+  color: var(--ink-secondary);
+  line-height: 1.65;
+  margin-bottom: 0.75rem;
+}
+
+.experience-bullets li::marker {
+  color: var(--accent-red);
+}
+
+.experience-bullets strong {
+  color: var(--ink-main);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .experience-meta {
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+}

@@ -1,40 +1,52 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-const FOCUS = [
-  "Deep Learning",
-  "Transformers",
-  "Diffusion Models",
-  "Machine Learning",
-  "ETL & Data Pipelines",
-  "Statistical Modeling",
-  "Predictive Analytics",
-  "Feature Engineering",
-  "Geospatial Analysis",
-  "Time-Series",
-];
-
-const TOOLKIT = [
-  "Python",
-  "SQL",
-  "R",
-  "Java",
-  "C/C++",
-  "PyTorch",
-  "scikit-learn",
-  "Pandas",
-  "NumPy",
-  "SciPy",
-  "Matplotlib",
-  "Plotly",
-  "ggplot2",
-  "Tableau",
-  "Power BI",
-  "Alteryx",
-  "AWS",
-  "Git/GitHub",
-  "PostgreSQL",
-  "MongoDB",
-  "Excel",
+const SKILL_CATEGORIES = [
+  {
+    name: "Data Integrity & Testing",
+    items: [
+      "User Acceptance Testing (UAT)",
+      "Quality Assurance (QA)",
+      "Data Cleaning & Validation",
+      "Financial/Statistical Analysis",
+      "ETL",
+      "Discrepancy Tracking",
+      "Data Quality Guardrails"
+    ],
+    type: "accent"
+  },
+  {
+    name: "Languages",
+    items: ["SQL", "Python", "R", "Java", "C/C++"],
+    type: "solid"
+  },
+  {
+    name: "Tools",
+    items: [
+      "Excel (Pivot Tables, Advanced Formulas)",
+      "Tableau",
+      "Power BI",
+      "Alteryx",
+      "AWS",
+      "Git/GitHub",
+      "PostgreSQL",
+      "MongoDB"
+    ],
+    type: "standard"
+  },
+  {
+    name: "Libraries",
+    items: [
+      "Pandas",
+      "NumPy",
+      "scikit-learn",
+      "PyTorch",
+      "SciPy",
+      "Matplotlib",
+      "Plotly",
+      "ggplot2"
+    ],
+    type: "solid"
+  }
 ];
 
 const projects = [
@@ -267,10 +279,10 @@ function App() {
                   <div className="notebook-tag">SEC_01 // INTRO</div>
                   <h1>Dylan Lucero</h1>
                   <div className="sub-roles">
-                    [ DATA SCIENTIST ] &bull; [ SOFTWARE ENGINEER ] &bull; [ ML RESEARCHER ]
+                    [ DATA SCIENTIST ] &bull; [ SOFTWARE ENGINEER ] &bull; [ DATA INTEGRITY &amp; TESTING ]
                   </div>
                   <p className="lead">
-                    Hi, I’m Dylan. I’m a data scientist and developer focused on turning complex, messy datasets into clean, reliable pipelines. Having just completed my <span className="hl">B.S. in Data Science</span> at <span className="hl">Arizona State</span>, I’m preparing for my <span className="hl">M.S. in Industrial Engineering</span> to blend statistical analysis with operations research. I thrive on unstructured challenges that need a balance of mathematics and code to solve.
+                    Hi, I’m Dylan. I’m a data scientist and developer focused on turning complex, messy datasets into clean, reliable pipelines. Having completed my <span className="hl">B.S. in Data Science</span> at <span className="hl">Arizona State</span>, I’m preparing for my <span className="hl">M.S. in Industrial Engineering</span> to blend statistical analysis with operations research. I thrive on unstructured challenges that need a balance of mathematics and code to solve.
                   </p>
                   <div className="hero-actions">
                     <a href="#projects" className="btn btn-primary">See my work</a>
@@ -292,26 +304,8 @@ function App() {
               <div className="notebook-tag">SEC_02 // ABOUT</div>
               <h2>About</h2>
               <p className="section-text section-text-wide">
-                My work lies at the intersection of statistical analysis, software engineering, and systems research. From building predictive PyTorch Transformer pipelines to analyze state electricity grids, to clean-transforming 900,000+ LAPD arrest records, I enjoy writing code that makes complex data clear. I place a strong emphasis on <span className="hl">reproducibility</span>—ensuring that every pipeline, scraper, and statistical model is clean, documented, and easy to build upon.
+                My work lies at the intersection of statistical modeling, data integrity, and software engineering. From validating predictive PyTorch Transformer models for regional utility baselines, to profiling and scrubbing campaign data using SHAP analysis, I enjoy writing code that makes complex data clear and reliable. I place a strong emphasis on <span className="hl">reproducibility and testing</span>—ensuring that every pipeline, validation script, and statistical model is robust and easy to build upon.
               </p>
-
-              <div className="about-block">
-                <h3 className="about-heading">Focus — what I love working on</h3>
-                <div className="chip-row">
-                  {FOCUS.map((item, idx) => (
-                    <span key={idx} className="chip">{item}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="about-block">
-                <h3 className="about-heading">Toolkit — what I reach for</h3>
-                <div className="chip-row">
-                  {TOOLKIT.map((item, idx) => (
-                    <span key={idx} className="chip chip-solid">{item}</span>
-                  ))}
-                </div>
-              </div>
 
               <div className="about-block">
                 <h3 className="about-heading">Education</h3>
@@ -334,11 +328,25 @@ function App() {
                 </div>
               </div>
 
+              {SKILL_CATEGORIES.map((cat, idx) => (
+                <div key={idx} className="about-block">
+                  <h3 className="about-heading">{cat.name}</h3>
+                  <div className="chip-row">
+                    {cat.items.map((item, i) => {
+                      let cls = "chip";
+                      if (cat.type === "solid") cls = "chip chip-solid";
+                      if (cat.type === "accent") cls = "chip chip-accent";
+                      return <span key={i} className={cls}>{item}</span>;
+                    })}
+                  </div>
+                </div>
+              ))}
+
               <div className="about-block">
-                <h3 className="about-heading">Honors & Recognition</h3>
+                <h3 className="about-heading">Extracurriculars &amp; Certifications</h3>
                 <div className="chip-row">
-                  <span className="chip chip-accent">ASU Dean’s List (Spring 2025, Fall 2025, Spring 2026)</span>
-                  <span className="chip chip-solid">ASA DataFest 2025 — 5th Place</span>
+                  <span className="chip chip-accent">Alteryx Core Designer Certification (March 2026)</span>
+                  <span className="chip chip-solid">ASA DataFest 2025 (5th Place)</span>
                 </div>
               </div>
             </div>
@@ -369,7 +377,7 @@ function App() {
                       </ul>
                       <div className="project-foot">
                         <span className="project-stack">{project.stack}</span>
-                        <a href={project.link} className="project-link">Details &rarr;</a>
+                        <a href={project.link} className="project-link" target="_blank" rel="noreferrer">Code &rarr;</a>
                       </div>
                     </div>
                   </article>
